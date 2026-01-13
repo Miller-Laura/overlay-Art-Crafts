@@ -1,0 +1,64 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  font-family: system-ui, sans-serif;
+  background: #f7c6d9;
+}
+
+/* ===== HAUPTGRID ===== */
+.overlay {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 16px;
+  height: 100vh;
+  padding: 16px;
+}
+
+/* ===== LINKE SPALTE ===== */
+.left {
+  display: grid;
+  grid-template-rows: 1fr 2fr;
+  gap: 16px;
+}
+
+/* ===== TOP-BEREICH ===== */
+.top {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 16px;
+}
+
+/* ===== TOOLS ===== */
+.tools {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* ===== BOXEN ===== */
+.box {
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed rgba(0,0,0,0.1);
+  color: #555;
+}
+
+/* ===== RECHTS ===== */
+.right {
+  display: flex;
+}
+
+.chat {
+  flex: 1;
+}
