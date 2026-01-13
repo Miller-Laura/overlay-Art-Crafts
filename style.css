@@ -10,10 +10,6 @@ html, body {
   height: 100%;
   font-family: system-ui, -apple-system, sans-serif;
   background: #f7c6d9; /* rosa Hintergrund */
-
-
-
-
 }
 
 /* Hauptlayout */
@@ -54,13 +50,14 @@ html, body {
   flex: none;
 }
 
+.chat {
+  flex: 1;
+}
+
 .tools {
   flex: 1;
 }
 
-.chat {
-  flex: 1;
-}
 .alerts {
   height: 150px;
   flex: none;
