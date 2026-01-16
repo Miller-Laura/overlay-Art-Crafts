@@ -77,3 +77,75 @@ class PomodoroTimer {
 
 // Timer initialisieren
 const pomodoroTimer = new PomodoroTimer(40, 15);
+
+class TodoList 
+{
+  constructor() 
+  {
+    this.todoListElement = document.getElementById('todo-list');
+    this.todos = [];
+    this.loadTodos();
+    this.render();
+  }
+  loadTodos() 
+  {
+    const savedTodos = localStorage.getItem('todos');
+    if (savedTodos) 
+    {
+      this.todos = JSON.parse(savedTodos);
+    }
+  }
+  saveTodos() 
+  {
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+  render() 
+  {
+    this.todoListElement.innerHTML = '';
+
+    this.todos.forEach((todo, index) => 
+    {
+      const li = document.createElement('li');
+      li.textContent = todo;
+      li.addEventListener('click', () => 
+      {
+        this.removeTodo(index);
+      });
+      this.todoListElement.appendChild(li);
+    },
+
+    function addTodo(text) 
+    {
+    const list = document.getElementById('todo-list');
+    const li = document.createElement('li');
+    li.textContent = text;
+    list.appendChild(li);
+    requestAnimationFrame(() => li.classList.add('show'));
+    },
+
+    function handleTodoCommand(message) 
+    {
+     const parts = message.trim().split(" ");
+     // parts[0] ist z.B. "!todo"
+     const sub = (parts[1] || "").toLowerCase();
+
+     if (!sub || sub === "add") 
+      {
+        const text = parts.slice(sub ? 2 : 1).join(" ");
+        addTodo(text);
+      } 
+      else if (sub === "done") 
+      {
+        const index = parseInt(parts[2], 10);
+        markTodoDone(index);
+      } 
+      else if (sub === "delete") 
+      {
+        const index = parseInt(parts[2], 10);
+        deleteTodo(index);
+      }
+    }
+
+  );
+  }
+}

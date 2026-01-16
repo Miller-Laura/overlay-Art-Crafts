@@ -112,6 +112,22 @@ html, body {
   border: 1px solid #6b5a45;
 }
 
+#todo-list li {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+#todo-list li.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#todo-list li.done {
+  opacity: 0.6;
+  text-decoration: line-through;
+}
+
 /*
 .chat {
   align-items: flex-start;
