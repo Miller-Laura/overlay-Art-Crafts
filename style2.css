@@ -9,7 +9,7 @@ html, body {
   width: 100%;
   height: 100%;
   font-family: system-ui, sans-serif;
-  background: #f7c6d9;
+  background:#3a271f;
 }
 
 .overlay {
@@ -26,48 +26,97 @@ html, body {
   gap: 16px;
 }
 
+/* Top Section */
 .top {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 2fr 1fr;
   gap: 16px;
 }
 
+/* Box Styles */
 .box {
-  background: rgba(255, 255, 255, 0.85);
+  background: #a0826d;
   border-radius: 16px;
   padding: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px dashed rgba(0,0,0,0.1);
-  color: #555;
-}
-
-.tools {
-  position: relative;
-  overflow: hidden;
-}
-
-.tool {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 600;
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.tool.active {
-  opacity: 1;
+  border: 2px dashed rgba(160, 130, 109, 0.4);
+  color: #2d1810;
+  opacity: 0.7;
 }
 
 .right {
   display: flex;
+  flex-direction: column;
+}
+
+.music-player {
+  flex: 1;
+}
+
+.todo {
+  flex: 1;
+  margin-bottom: 16px;
 }
 
 .chat {
   flex: 1;
 }
+
+/* Pomodoro Timer */
+.pomodoro-timer {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.timer-display {
+  font-size: 48px;
+  font-weight: bold;
+  color: #f5e6d3;
+  font-family: 'Courier New', monospace;
+}
+
+.timer-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.timer-buttons button {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  background: #9f5d2d;
+  color: #f5e6d3;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.timer-buttons button:hover {
+  background: #8b6f47;
+}
+
+.timer-buttons button:active {
+  transform: scale(0.95);
+}
+
+.todo {
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: rgba(49, 40, 34, 0.98);
+  border: 1px solid #6b5a45;
+}
+
+/*
+.chat {
+  align-items: flex-start;
+  justify-content: flex-start;
+  background: rgba(28, 25, 23, 0.98);
+  border: 1px solid #3f3328;
+}
+*/
