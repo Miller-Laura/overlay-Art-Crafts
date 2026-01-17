@@ -101,26 +101,37 @@ class TodoList
   }
   render() 
   {
-    this.todoListElement.innerHTML = '';
-
+    //Liste im DOM leeren
+    this.todoListElement.innerHTML = "";
+    //Liste neu aufbauen, für jedes Todo ein Listenelement erstellen
     this.todos.forEach((todo, index) => 
     {
       const li = document.createElement('li');
       li.textContent = todo;
+      // Klick-Event zum Entfernen des Todos
       li.addEventListener('click', () => 
       {
         this.removeTodo(index);
       });
+      // Listenelement zum DOM hinzufügen, <li> in <ul>
       this.todoListElement.appendChild(li);
     },
 
     function addTodo(text) 
     {
-    const list = document.getElementById('todo-list');
-    const li = document.createElement('li');
-    li.textContent = text;
-    list.appendChild(li);
-    requestAnimationFrame(() => li.classList.add('show'));
+      this.todos.push(text);
+      this.saveTodos();
+      this.render();
+    },
+
+    function markTodoDone(index) 
+    {
+      if (index >= 0 && index < this.todos.length) 
+      {
+        this.todos[index] = this.todos[index] + " (done)";
+        this.saveTodos();
+        this.render();
+      }
     },
 
     function handleTodoCommand(message) 
@@ -142,7 +153,7 @@ class TodoList
       else if (sub === "delete") 
       {
         const index = parseInt(parts[2], 10);
-        deleteTodo(index);
+        this.removeTodo(index);
       }
     }
 
