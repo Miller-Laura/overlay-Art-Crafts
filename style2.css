@@ -55,14 +55,7 @@ html, body {
   flex: 1;
 }
 
-.todo {
-  flex: 1;
-  margin-bottom: 16px;
-}
 
-.chat {
-  flex: 1;
-}
 
 /* Pomodoro Timer */
 .pomodoro-timer {
@@ -112,10 +105,14 @@ html, body {
   border: 1px solid #6b5a45;
 }
 
+#todo-list {
+  list-style: none;
+  width: 100%;
+  color: #f5e6d3;
+}
+
 #todo-list li {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+padding: 4px 0;;
 }
 
 #todo-list li.show {
@@ -128,6 +125,15 @@ html, body {
   text-decoration: line-through;
 }
 
+/*todo-Box*/
+.todo {
+  flex: 1;
+  margin-bottom: 16px;
+}
+
+.chat {
+  flex: 1;
+}
 /*
 .chat {
   align-items: flex-start;
