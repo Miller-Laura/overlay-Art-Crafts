@@ -1,4 +1,4 @@
-// Pomodoro Timer
+// ================= Pomodoro Timer =================
 class PomodoroTimer {
   constructor(workMinutes = 30, breakMinutes = 15) {
     this.workMinutes = workMinutes;
@@ -8,12 +8,14 @@ class PomodoroTimer {
     this.isRunning = false;
     this.isWorkSession = true;
     this.timerInterval = null;
+
     this.timerDisplay = document.querySelector(".timer-display");
     this.startBtn = document.getElementById("startBtn");
     this.pauseBtn = document.getElementById("pauseBtn");
     this.resetBtn = document.getElementById("resetBtn");
 
     this.initializeEventListeners();
+    this.updateDisplay();
   }
 
   initializeEventListeners() {
@@ -77,6 +79,7 @@ class PomodoroTimer {
 // Timer initialisieren
 const pomodoroTimer = new PomodoroTimer(40, 15);
 
+// ================= Todo-Liste =================
 class TodoList {
   constructor() {
     this.todoListElement = document.getElementById("todo-list");
@@ -97,20 +100,22 @@ class TodoList {
   }
 
   render() {
-    //Liste im DOM leeren
+    // Liste im DOM leeren
     this.todoListElement.innerHTML = "";
-    //Liste neu aufbauen, für jedes Todo ein Listenelement erstellen
+
+    // Liste neu aufbauen
     this.todos.forEach((todo, index) => {
       const li = document.createElement("li");
       li.textContent = todo;
-      // Klick-Event zum Entfernen des Todos
+
+      // Klick: Todo entfernen
       li.addEventListener("click", () => {
         this.removeTodo(index);
       });
-      // Listenelement zum DOM hinzufügen, <li> in <ul>
+
       this.todoListElement.appendChild(li);
 
-      // kleine Verzögerung für die Einblendung
+      // Einblend-Animation
       requestAnimationFrame(() => {
         li.classList.add("show");
       });
@@ -133,35 +138,38 @@ class TodoList {
 
   markTodoDone(index) {
     if (index < 0 || index >= this.todos.length) return;
-    this.todos[index] = this.todos[index] + " (done)";
+    this.todos[index] = this.todos[index] + " X ";
     this.saveTodos();
     this.render();
   }
 
+  // stabile, einfache Version: nur "!todo Aufgabe ..."
+
   handleTodoCommand(message) {
     const parts = message.trim().split(" ");
-    const text = parts.slice(1).join(" ");
-    this.addTodo(text);
+    const command = (parts[0] || "").toLowerCase();
 
-    // Nur "!todo irgendwas" → Todo hinzufügen
+    if (command !== "!todo") return;
+
+    const sub = (parts[1] || "").toLowerCase();
+
+    // Fall: nur "!todo Text" → hinzufügen
     if (!sub || sub === "add") {
       const text = parts.slice(sub ? 2 : 1).join(" ");
       this.addTodo(text);
       return;
     }
 
-    // Kommandos mit Index: done / delete
-    const index = parseInt(parts[2], 10) - 1; // z.B. "!todo done 1" → Index 0
-
-    if (sub === "done") {
-      this.markTodoDone(index);
-    } else if (sub === "delete") {
-      this.removeTodo(index);
+    // Fall: "!todo delete 1"
+    if (sub === "delete") {
+      const index = parseInt(parts[2], 10) - 1; // 1 → 0
+      if (!Number.isNaN(index)) {
+        this.removeTodo(index);
+      }
     }
   }
 }
 
+// Todo-Instanz global verfügbar machen
 window.todoList = new TodoList();
-// Todo-Instanz erstellen
-// später: irgendwo im Code, wenn Chat-Nachricht kommt:
-//todoList.handleTodoCommand("!todo Mathe lernen");
+// ================= Chat-Integration =================
