@@ -27,7 +27,7 @@ html, body {
 
 .top {
   display: grid;
-  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-columns: 2fr 1.5fr 1.5fr;
   gap: 16px;
 }
 
@@ -53,6 +53,20 @@ html, body {
 /* Facecam Placeholder */
 .facecam {
   font-size: 18px;
+  font-weight: 600;
+  opacity: 0.3;
+    
+}
+/* Music Player */
+.music-player {
+  font-size: 18px;
+  font-weight: 600;
+  opacity: 0.5;
+}
+
+/* Deskcam */
+.deskcam {
+  font-size: 24px;
   font-weight: 600;
   opacity: 0.3;
 }
@@ -115,19 +129,7 @@ html, body {
   cursor: not-allowed;
 }
 
-/* Music Player */
-.music-player {
-  font-size: 18px;
-  font-weight: 600;
-  opacity: 0.5;
-}
 
-/* Deskcam */
-.deskcam {
-  font-size: 24px;
-  font-weight: 600;
-  opacity: 0.3;
-}
 
 /* Todo Liste */
 .todo {

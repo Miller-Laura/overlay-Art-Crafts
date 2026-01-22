@@ -26,9 +26,9 @@ class PomodoroTimer {
 
     // Keyboard shortcuts
     document.addEventListener("keypress", (e) => {
-      if (e.key === "s") this.start();
-      if (e.key === "p") this.pause();
-      if (e.key === "r") this.reset();
+      if (e.key === "1") this.start();
+      if (e.key === "2") this.pause();
+      if (e.key === "3") this.reset();
     });
   }
 
