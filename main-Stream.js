@@ -115,7 +115,7 @@ class TodoList {
 
     if (this.todos.length === 0) {
       this.todoListElement.innerHTML =
-        '<div class="todo-empty">Keine Aufgaben - schreib !todo [Aufgabe] im Chat</div>';
+        '<div class="todo-empty">Keine Aufgaben - schreib !todo [Aufgabe] in den Chat</div>';
       this.todoCountElement.textContent = "0 Aufgaben";
       return;
     }
