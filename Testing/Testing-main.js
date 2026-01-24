@@ -363,7 +363,7 @@ class ChatSystem {
 }
 
 // ================= Initialisierung =================
-const pomodoroTimer = new PomodoroTimer(40, 15);
+const pomodoroTimer = new PomodoroTimer(50, 15);
 window.todoList = new TodoList();
 const chatSystem = new ChatSystem();
 
