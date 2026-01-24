@@ -4,7 +4,7 @@ const USE_TWITCH = TWITCH_CHANNEL !== "";
 
 // ================= Pomodoro Timer =================
 class PomodoroTimer {
-  constructor(workMinutes = 40, breakMinutes = 15) {
+  constructor(workMinutes = 50, breakMinutes = 15) {
     this.workMinutes = workMinutes;
     this.breakMinutes = breakMinutes;
     this.totalSeconds = workMinutes * 60;
@@ -285,7 +285,7 @@ class ChatSystem {
 }
 
 // ================= Initialisierung =================
-const pomodoroTimer = new PomodoroTimer(40, 15);
+const pomodoroTimer = new PomodoroTimer(50, 15);
 window.todoList = new TodoList();
 const chatSystem = new ChatSystem();
 
