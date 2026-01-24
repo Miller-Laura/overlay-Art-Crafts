@@ -1,4 +1,8 @@
-// Pomodoro Timer
+// ===== KONFIGURATION =====
+const TWITCH_CHANNEL = "Rulacat"; // <-- Hier deinen Twitch-Channel eintragen (z.B. "deinname")
+const USE_TWITCH = TWITCH_CHANNEL !== "";
+
+// ================= Pomodoro Timer =================
 class PomodoroTimer {
   constructor(workMinutes = 40, breakMinutes = 15) {
     this.workMinutes = workMinutes;
@@ -72,7 +76,6 @@ class PomodoroTimer {
 
     this.updateSessionLabel();
 
-    // Optional: Sound oder visuelle Benachrichtigung
     this.timerBox.style.background = this.isWorkSession
       ? "linear-gradient(135deg, #a0826d 0%, #8b6f47 100%)"
       : "linear-gradient(135deg, #6b9f5d 0%, #478b6f 100%)";
@@ -98,7 +101,7 @@ class PomodoroTimer {
   }
 }
 
-// Todo List (OHNE localStorage - funktioniert in OBS)
+// ================= Todo-Liste =================
 class TodoList {
   constructor() {
     this.todoListElement = document.getElementById("todo-list");
@@ -158,18 +161,15 @@ class TodoList {
   }
 
   handleTodoCommand(message) {
-    // Entferne "!todo" vom Anfang
     const cleaned = message.replace(/^!todo\s*/i, "").trim();
     const parts = cleaned.split(" ");
     const command = parts[0].toLowerCase();
 
-    // Kein Subcommand = direkt Todo hinzufügen
     if (!command || !["done", "delete", "clear"].includes(command)) {
       this.addTodo(cleaned);
       return;
     }
 
-    // Subcommands
     if (command === "clear") {
       this.todos = [];
       this.render();
@@ -186,12 +186,70 @@ class TodoList {
   }
 }
 
-// Simple Chat System
+// ================= Chat System =================
 class ChatSystem {
   constructor() {
     this.chatMessages = document.getElementById("chat-messages");
     this.messages = [];
     this.maxMessages = 20;
+
+    this.socket = null;
+    this.connectionStatus = document.getElementById("connectionStatus");
+
+    if (USE_TWITCH) {
+      this.connectToTwitch();
+    }
+  }
+
+  connectToTwitch() {
+    if (!USE_TWITCH || this.isTestMode) return;
+
+    this.updateConnectionStatus("Verbinde...", "disconnected");
+
+    this.socket = new WebSocket("wss://irc-ws.chat.twitch.tv:443");
+
+    this.socket.onopen = () => {
+      this.socket.send("PASS oauth:FAKE");
+      this.socket.send("NICK justinfan12345");
+      this.socket.send(`JOIN #${TWITCH_CHANNEL}`);
+      this.updateConnectionStatus(`Verbunden: #${TWITCH_CHANNEL}`, "connected");
+    };
+
+    this.socket.onmessage = (event) => {
+      const message = event.data;
+
+      if (message.startsWith("PING")) {
+        this.socket.send("PONG :tmi.twitch.tv");
+        return;
+      }
+
+      if (message.includes("PRIVMSG")) {
+        const match = message.match(/:(\w+)!.*PRIVMSG #\w+ :(.+)/);
+        if (match) {
+          const username = match[1];
+          const text = match[2].trim();
+          this.addMessage(username, text);
+        }
+      }
+    };
+
+    this.socket.onerror = () => {
+      this.updateConnectionStatus("Fehler bei Verbindung", "disconnected");
+    };
+
+    this.socket.onclose = () => {
+      this.updateConnectionStatus("Getrennt", "disconnected");
+      if (!this.isTestMode) {
+        setTimeout(() => this.connectToTwitch(), 5000);
+      }
+    };
+  }
+
+  updateConnectionStatus(text, className) {
+    if (this.connectionStatus) {
+      this.connectionStatus.textContent = text;
+      this.connectionStatus.className = `connection-status ${className}`;
+    }
   }
 
   addMessage(username, text) {
@@ -226,35 +284,18 @@ class ChatSystem {
   }
 }
 
-// Initialisierung
+// ================= Initialisierung =================
 const pomodoroTimer = new PomodoroTimer(40, 15);
 window.todoList = new TodoList();
 const chatSystem = new ChatSystem();
 
-// Demo-Funktion zum Testen (kann später entfernt werden)
-function addDemoMessage() {
-  const demoUsers = ["StreamerX", "CodeMaster", "StudyBuddy"];
-  const demoMessages = [
-    "Viel Erfolg beim Lernen!",
-    "Was lernst du gerade?",
-    "!todo Mathehausaufgaben machen",
-    "!todo Code Review durchführen",
-    "Super Stream! 💪",
-  ];
-
-  const randomUser = demoUsers[Math.floor(Math.random() * demoUsers.length)];
-  const randomMsg =
-    demoMessages[Math.floor(Math.random() * demoMessages.length)];
-
-  chatSystem.addMessage(randomUser, randomMsg);
+// Info-Nachricht beim Start
+if (!USE_TWITCH) {
+  setTimeout(() => {
+    chatSystem.addMessage(
+      "System",
+      "💡 Test-Modus aktiv! Schreibe Test-Nachrichten unten.",
+    );
+    chatSystem.addMessage("System", "📝 Probier: !todo Hausaufgaben machen");
+  }, 500);
 }
-
-// Globale Funktion für externe Chat-Integration (z.B. Twitch)
-window.handleChatMessage = function (username, message) {
-  chatSystem.addMessage(username, message);
-};
-
-// Beispiel-Nachrichten zum Testen (auskommentieren für Production)
-setTimeout(() => addDemoMessage(), 2000);
-setTimeout(() => addDemoMessage(), 4000);
-setTimeout(() => addDemoMessage(), 6000);

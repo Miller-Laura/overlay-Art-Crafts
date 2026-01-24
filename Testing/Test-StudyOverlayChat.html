@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Overlay</title>
+    <link rel="stylesheet" href="Testing.css" />
+  </head>
+
+  <body>
+    <div class="overlay">
+      <div class="left">
+        <div class="top">
+          <div class="box facecam"></div>
+          <div class="box pomodoro-timer" id="timerBox">
+            <div class="session-label" id="sessionLabel">Arbeitsphase</div>
+            <div class="timer-display">40:00</div>
+            <div class="timer-buttons">
+              <button id="startBtn">Start</button>
+              <button id="pauseBtn">Pause</button>
+              <button id="resetBtn">Reset</button>
+            </div>
+          </div>
+          <div class="box music-player"></div>
+        </div>
+        <div class="box deskcam"></div>
+      </div>
+      <aside class="right">
+        <div class="box todo">
+          <div class="todo-header">
+            <div class="todo-title">📝 Aufgaben</div>
+            <div class="todo-count" id="todoCount">0 Aufgaben</div>
+          </div>
+          <ul id="todo-list">
+            <div class="todo-empty">
+              Keine Aufgaben - schreib !todo [Aufgabe] im Chat
+            </div>
+          </ul>
+        </div>
+        <div class="box chat">
+          <div class="chat-header">
+            <div>
+              <div class="chat-title">💬 Chat</div>
+              <div class="connection-status" id="connectionStatus">
+                Test-Modus
+              </div>
+            </div>
+            <button class="chat-mode-toggle test-mode" id="modeToggle">
+              TEST
+            </button>
+          </div>
+          <div id="chat-messages"></div>
+          <div class="test-input-container active" id="testInputContainer">
+            <div class="test-input-wrapper">
+              <input
+                type="text"
+                class="test-username-input"
+                id="testUsername"
+                placeholder="Username"
+                value="TestUser"
+              />
+              <input
+                type="text"
+                class="test-message-input"
+                id="testMessage"
+                placeholder="Nachricht..."
+              />
+              <button class="test-send-btn" id="testSendBtn">Send</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script src="Testing-main.js"></script>
+  </body>
+</html>
