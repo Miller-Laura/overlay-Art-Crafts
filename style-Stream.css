@@ -64,6 +64,37 @@ html, body {
   opacity: 0.5;
 }
 
+.music-content {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.music-icon {
+  width: 32px;
+  height: 32px;
+  margin-right: 12px;
+}
+
+.now-playing {
+  font-size: 20px;
+  color: #fff;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* SCROLL-ANIMATION */
+@keyframes scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+.now-playing.scrolling {
+  animation: scroll-left 15s linear infinite;
+}
+
 /* Deskcam */
 .deskcam {
   font-size: 24px;

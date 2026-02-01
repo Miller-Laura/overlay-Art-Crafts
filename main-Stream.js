@@ -2,6 +2,22 @@
 const TWITCH_CHANNEL = "Rulacat"; // <-- Hier deinen Twitch-Channel eintragen (z.B. "deinname")
 const USE_TWITCH = TWITCH_CHANNEL !== "";
 
+// ================= Hilfsfunktionen =================
+//function $(selector) {
+//return document.querySelector(selector);
+//}
+
+// ================= Music-Player =================
+// Now Playing mit Snip.txt
+// Test-Snippet (funktioniert garantiert)
+function updateMusic() {
+  // HARDCODE für Test
+  document.getElementById("nowPlaying").textContent =
+    "♪ Test – Langer Titel der durchscrollt";
+}
+setInterval(updateMusic, 4000);
+updateMusic();
+
 // ================= Pomodoro Timer =================
 class PomodoroTimer {
   constructor(workMinutes = 50, breakMinutes = 15) {
