@@ -1,22 +1,76 @@
 // ===== KONFIGURATION =====
-const TWITCH_CHANNEL = "Rulacat"; // <-- Hier deinen Twitch-Channel eintragen (z.B. "deinname")
+const TWITCH_CHANNEL = "Rulacat";
 const USE_TWITCH = TWITCH_CHANNEL !== "";
 
-// ================= Hilfsfunktionen =================
-//function $(selector) {
-//return document.querySelector(selector);
-//}
+// SNIP PFAD - Passe das an deinen Computer an!
+const SNIP_FILE_PATH = "C:/Users/lmill/Documents/Snip/Snip.txt";
 
-// ================= Music-Player =================
-// Now Playing mit Snip.txt
-// Test-Snippet (funktioniert garantiert)
-function updateMusic() {
-  // HARDCODE für Test
-  document.getElementById("nowPlaying").textContent =
-    "♪ Test – Langer Titel der durchscrollt";
+// ================= Music Widget =================
+class MusicWidget {
+  constructor() {
+    this.titleElement = document.getElementById("musicTitle");
+    this.artistElement = document.getElementById("musicArtist");
+    this.currentSong = "";
+    this.updateInterval = null;
+
+    // Demo-Modus (da wir Snip.txt nicht direkt lesen können)
+    this.startDemo();
+  }
+
+  startDemo() {
+    // Demo-Songs zum Zeigen wie es aussieht
+    const demoSongs = [
+      { artist: "Queen", title: "Bohemian Rhapsody" },
+      { artist: "Led Zeppelin", title: "Stairway to Heaven" },
+      { artist: "Eagles", title: "Hotel California" },
+      { artist: "Pink Floyd", title: "Comfortably Numb" },
+    ];
+
+    let index = 0;
+
+    // Zeige ersten Song
+    this.updateDisplay(demoSongs[index].artist, demoSongs[index].title);
+
+    // Wechsle Demo-Songs alle 15 Sekunden
+    setInterval(() => {
+      index = (index + 1) % demoSongs.length;
+      this.updateDisplay(demoSongs[index].artist, demoSongs[index].title);
+    }, 15000);
+
+    console.log("🎵 Music Widget läuft im Demo-Modus");
+    console.log(
+      "💡 Für echte Snip-Integration: OBS Text Source über Widget legen",
+    );
+  }
+
+  updateDisplay(artist, title) {
+    if (!artist || !title) return;
+
+    const songText = `${artist} - ${title}`;
+
+    if (songText === this.currentSong) return;
+    this.currentSong = songText;
+
+    // Update Display
+    this.titleElement.textContent = title;
+    this.artistElement.textContent = artist;
+
+    // Scrolling für lange Texte
+    if (title.length > 20) {
+      this.titleElement.classList.add("scrolling");
+    } else {
+      this.titleElement.classList.remove("scrolling");
+    }
+
+    if (artist.length > 25) {
+      this.artistElement.classList.add("scrolling");
+    } else {
+      this.artistElement.classList.remove("scrolling");
+    }
+
+    console.log(`🎵 Now Playing: ${artist} - ${title}`);
+  }
 }
-setInterval(updateMusic, 4000);
-updateMusic();
 
 // ================= Pomodoro Timer =================
 class PomodoroTimer {
@@ -208,7 +262,6 @@ class ChatSystem {
     this.chatMessages = document.getElementById("chat-messages");
     this.messages = [];
     this.maxMessages = 20;
-
     this.socket = null;
     this.connectionStatus = document.getElementById("connectionStatus");
 
@@ -218,7 +271,7 @@ class ChatSystem {
   }
 
   connectToTwitch() {
-    if (!USE_TWITCH || this.isTestMode) return;
+    if (!USE_TWITCH) return;
 
     this.updateConnectionStatus("Verbinde...", "disconnected");
 
@@ -255,9 +308,7 @@ class ChatSystem {
 
     this.socket.onclose = () => {
       this.updateConnectionStatus("Getrennt", "disconnected");
-      if (!this.isTestMode) {
-        setTimeout(() => this.connectToTwitch(), 5000);
-      }
+      setTimeout(() => this.connectToTwitch(), 5000);
     };
   }
 
@@ -301,17 +352,20 @@ class ChatSystem {
 }
 
 // ================= Initialisierung =================
+console.log("🎮 Study Overlay wird geladen...");
+
+const musicWidget = new MusicWidget();
 const pomodoroTimer = new PomodoroTimer(50, 15);
 window.todoList = new TodoList();
 const chatSystem = new ChatSystem();
 
-// Info-Nachricht beim Start
-if (!USE_TWITCH) {
-  setTimeout(() => {
-    chatSystem.addMessage(
-      "System",
-      "💡 Test-Modus aktiv! Schreibe Test-Nachrichten unten.",
-    );
-    chatSystem.addMessage("System", "📝 Probier: !todo Hausaufgaben machen");
-  }, 500);
-}
+console.log("✅ Overlay geladen!");
+console.log("🎵 Music Widget: Demo-Modus (zeigt Beispiel-Songs)");
+console.log(
+  `💬 Twitch: ${USE_TWITCH ? "Verbunden mit " + TWITCH_CHANNEL : "Nicht konfiguriert"}`,
+);
+console.log("");
+console.log("📝 Für echte Snip-Integration:");
+console.log("   → OBS: Text (GDI+) Source hinzufügen");
+console.log("   → Read from file: " + SNIP_FILE_PATH);
+console.log("   → Über Music Widget positionieren");
