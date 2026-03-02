@@ -12,13 +12,54 @@ class MusicWidget {
     this.artistElement = document.getElementById("musicArtist");
     this.currentSong = "";
     this.updateInterval = null;
+    this.serverUrl = "http://localhost:8765";
+    this.isServerMode = true;
 
-    // Demo-Modus (da wir Snip.txt nicht direkt lesen können)
-    this.startDemo();
+    // Starte Server-Modus
+    this.startServerMode();
+  }
+
+  async startServerMode() {
+    console.log("🎵 Music Widget - Verbinde mit Snip Server...");
+
+    // Teste Server-Verbindung
+    const serverAvailable = await this.testServer();
+
+    if (serverAvailable) {
+      console.log("✅ Server gefunden! Lade echte Song-Daten...");
+      this.updateFromServer();
+      // Update alle 2 Sekunden
+      this.updateInterval = setInterval(() => this.updateFromServer(), 2000);
+    } else {
+      console.log("⚠️ Server nicht erreichbar - starte Demo-Modus");
+      this.startDemo();
+    }
+  }
+
+  async testServer() {
+    try {
+      const response = await fetch(this.serverUrl);
+      return response.ok;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  async updateFromServer() {
+    try {
+      const response = await fetch(this.serverUrl);
+      const data = await response.json();
+
+      if (data.status === "ok" && data.artist && data.title) {
+        this.updateDisplay(data.artist, data.title);
+      }
+    } catch (error) {
+      console.error("❌ Fehler beim Abrufen der Song-Daten:", error);
+    }
   }
 
   startDemo() {
-    // Demo-Songs zum Zeigen wie es aussieht
+    // Fallback: Demo-Songs wenn Server nicht läuft
     const demoSongs = [
       { artist: "Queen", title: "Bohemian Rhapsody" },
       { artist: "Led Zeppelin", title: "Stairway to Heaven" },
@@ -27,20 +68,14 @@ class MusicWidget {
     ];
 
     let index = 0;
-
-    // Zeige ersten Song
     this.updateDisplay(demoSongs[index].artist, demoSongs[index].title);
 
-    // Wechsle Demo-Songs alle 15 Sekunden
     setInterval(() => {
       index = (index + 1) % demoSongs.length;
       this.updateDisplay(demoSongs[index].artist, demoSongs[index].title);
     }, 15000);
 
-    console.log("🎵 Music Widget läuft im Demo-Modus");
-    console.log(
-      "💡 Für echte Snip-Integration: OBS Text Source über Widget legen",
-    );
+    console.log("🎵 Demo-Modus aktiv");
   }
 
   updateDisplay(artist, title) {
